@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+      body {
+          background-color: black;
+          color: yellow;
+          font-family: Arial, sans-serif;
+      }
+      nav {
+          background-color: #222;
+      }
+      .list-group-item {
+          background-color: transparent;
+          border: none;
+      }
+      .list-group-item a {
+          color: yellow;
+          font-weight: bold;
+      }
+      .list-group-item a:hover {
+          color: #e6e600;
+      }
+      .card-img-top {
+          display: block;
+          margin: 50px auto;
+          border-radius: 10px;
+          box-shadow: 0px 0px 10px rgba(255, 255, 0, 0.5);
+      }
+      .message {
+          text-align: center;
+          margin-top: 20px;
+          font-size: 24px;
+      }
+  </style>
+</head>
+<body>
+  <nav class="d-flex align-items-center">
+      <ul class="d-flex gap-5 m-auto p-2 list-group-item active">
+          <li class="list-group-item"><a href="/">Home</a></li>
+          <li class="list-group-item"><input placeholder="Search" class="form-control" /></li>
+          <li class="list-group-item"><a href="/login">log in</a></li>
+      </ul>
+  </nav>
+
+  <img src="https://www.mobiledokan.com/media/google-pixel-9-pro-xl-porcelain-image.webp"
+       class="card-img-top" style="height:350px;width:300px" alt="Pixel 9">
+
+  <div class="message">
+      <p>Hello, thank you for buying the phone!</p>
+  </div>
+</body>
+</html>
