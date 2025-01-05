@@ -1,0 +1,8 @@
+# Ignore the .idea folder (used by JetBrains IDEs like PyCharm)
+.idea/
+
+# Ignore the .venv folder (virtual environment folder)
+.venv/
+
+# Ignore the __pycache__ folder (compiled Python files)
+__pycache__/

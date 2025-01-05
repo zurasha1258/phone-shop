@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 alembic
 blinker
 click
@@ -17,3 +18,24 @@ typing_extensions
 Werkzeug
 WTForms
 gunicorn
+=======
+alembic
+blinker
+click
+colorama
+Flask
+Flask-Login
+Flask-Migrate
+Flask-SQLAlchemy
+Flask-WTF
+greenlet
+itsdangerous
+Jinja2
+Mako
+MarkupSafe
+SQLAlchemy
+typing_extensions
+Werkzeug
+WTForms
+gunicorn
+>>>>>>> 1b01b77 (gitignoe added)
