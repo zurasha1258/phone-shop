@@ -23,3 +23,9 @@ class LoginForm(FlaskForm):
 class SearchForm(FlaskForm):
     query = StringField('Search', validators=[DataRequired()])
     submit = SubmitField('Search')
+
+class CardForm(FlaskForm):
+    CardNumber = StringField('CardNumber', validators=[DataRequired()])
+    ExpiryMonth = StringField('ExpiryMonth', validators=[DataRequired()])
+    ExpiryYear = StringField('ExpiryYear', validators=[DataRequired()])
+    CVV = StringField('CVV', validators=[DataRequired()])

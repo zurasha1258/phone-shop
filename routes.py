@@ -4,7 +4,7 @@ from flask_migrate import current
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from models import User, Phone, Purchased
-from forms import LoginForm, UserForm, AddProductForm
+from forms import LoginForm, UserForm, AddProductForm, CardForm
 from configs import app, db
 import os
 import math
@@ -202,10 +202,15 @@ def search():
     return render_template('index.html', query=query, phones=phones, total_pages=total_pages, current_page=page)
 
 
-@app.route('/buy/<int:id>', methods=['POST'])
+@app.route('/card/<int:id>', methods=['POST', 'GET'])
 @login_required
 def buy(id):
-    purchased = Purchased(phoneid=id, userid=current_user.id)
-    db.session.add(purchased)
-    db.session.commit()
-    return redirect(url_for('self'))
+    form = CardForm()
+    print(form.data)
+    if form.validate_on_submit():
+        purchased = Purchased(phoneid=id, userid=current_user.id)
+        db.session.add(purchased)
+        db.session.commit()
+        return redirect(url_for('self'))
+    return render_template('card.html', phone=id, form=form)
+
