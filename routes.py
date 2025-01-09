@@ -6,6 +6,7 @@ from models import User, Phone, Purchased
 from forms import LoginForm, UserForm, AddProductForm
 from configs import app, db
 import os
+import math
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -43,12 +44,25 @@ def login():
 
 @app.route('/')
 def index():
-    phones = Phone.query.filter((Phone.isdeleted == False) | (Phone.isdeleted == None)).all()
+    page = request.args.get('page', 1, type=int)
+    ITEMS_PER_PAGE = 16  # Number of items per page
+    phones = (
+        Phone.query
+        .filter((Phone.isdeleted == False) | (Phone.isdeleted == None))
+        .limit(ITEMS_PER_PAGE)
+        .offset((page - 1) * ITEMS_PER_PAGE)
+        .all()
+    )
+    countAll = Phone.query.filter((Phone.isdeleted == False) | (Phone.isdeleted == None)).count()
 
-    # Ensure current_user is defined in the template context
+
+
+    total_pages = math.ceil(countAll / ITEMS_PER_PAGE)
+
+    print(total_pages)
     user = current_user if current_user.is_authenticated else None
 
-    return render_template('index.html', images=images, phones=phones, current_user=user)
+    return render_template('index.html', images=images, phones=phones, current_user=user, total_pages=total_pages, current_page=page)
 
 
 
