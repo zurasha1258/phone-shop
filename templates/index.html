@@ -62,7 +62,7 @@
             border: none;
             border-radius: 12px;
             overflow: hidden;
-            width: 275px;
+            width: 260px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         }
         .card:hover {
@@ -243,13 +243,13 @@
 <div class="pager">
     <!-- Previous Button -->
     {% if current_page > 1 %}
-    <a href="?page={{ current_page - 1 }}" class="previous">Previous</a>
+    <a href="{% if query %}{{ url_for('search', name=query, page=current_page - 1) }}{% else %}{{ url_for('index', page=current_page - 1) }}{% endif %}" class="previous">Previous</a>
     {% endif %}
 
     <!-- Page Links -->
     {% for page in range(1, total_pages + 1) %}
         {% if page == current_page or page == current_page - 1 or page == current_page + 1 %}
-        <a href="?page={{ page }}" class="{% if page == current_page %}active{% endif %}">
+        <a href="{% if query %}{{ url_for('search', name=query, page=page) }}{% else %}{{ url_for('index', page=page) }}{% endif %}" class="{% if page == current_page %}active{% endif %}">
             {{ page }}
         </a>
         {% endif %}
@@ -257,9 +257,11 @@
 
     <!-- Next Button -->
     {% if current_page < total_pages %}
-    <a href="?page={{ current_page + 1 }}" class="next">Next</a>
+    <a href="{% if query %}{{ url_for('search', name=query, page=current_page + 1) }}{% else %}{{ url_for('index', page=current_page + 1) }}{% endif %}" class="next">Next</a>
     {% endif %}
 </div>
+
+
 
 <footer class="footer">
     <div class="container text-center">

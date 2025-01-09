@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, login_required, logout_user, current_user, LoginManager
+from flask_migrate import current
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from models import User, Phone, Purchased
@@ -27,6 +28,9 @@ images = [
         "https://s.yimg.com/os/creatr-uploaded-images/2023-02/9039b320-b784-11ed-939f-683a71d03bde"
     ]
 
+ITEMS_PER_PAGE = 8
+
+
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -45,7 +49,6 @@ def login():
 @app.route('/')
 def index():
     page = request.args.get('page', 1, type=int)
-    ITEMS_PER_PAGE = 16  # Number of items per page
     phones = (
         Phone.query
         .filter((Phone.isdeleted == False) | (Phone.isdeleted == None))
@@ -54,12 +57,8 @@ def index():
         .all()
     )
     countAll = Phone.query.filter((Phone.isdeleted == False) | (Phone.isdeleted == None)).count()
-
-
-
     total_pages = math.ceil(countAll / ITEMS_PER_PAGE)
 
-    print(total_pages)
     user = current_user if current_user.is_authenticated else None
 
     return render_template('index.html', images=images, phones=phones, current_user=user, total_pages=total_pages, current_page=page)
@@ -96,7 +95,7 @@ def product_detail(id):
         return "Phone not found", 404
 
 
-    return render_template('mobile.html', phone=phone)
+    return render_template('mobile.html', phone=phone, current_user=current_user)
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -171,20 +170,40 @@ def register():
     return render_template('registration.html', form=form)
 
 
-
 @app.route('/search', methods=['GET'])
 def search():
     query = request.args.get('name')
-    results = []
-    if not query:
-        return redirect(url_for('index'));
-    if query:
-        phones = Phone.query.filter((Phone.name.ilike(f"%{query}%"))).all()
-        print(results)
-    return render_template('index.html', query=query, phones=phones, images=images)
+    page = request.args.get('page', 1, type=int)
+    if not query and not page:
+        return redirect(url_for('index'))
+
+    phones = (
+        Phone.query
+        .filter(
+            ((Phone.isdeleted == False) | (Phone.isdeleted == None)) &
+            (Phone.name.ilike(f"%{query}%"))
+        )
+        .limit(ITEMS_PER_PAGE)
+        .offset((page - 1) * ITEMS_PER_PAGE)
+        .all()
+    )
+
+    countAll = (
+        Phone.query
+        .filter(
+            ((Phone.isdeleted == False) | (Phone.isdeleted == None)) &
+            (Phone.name.ilike(f"%{query}%"))
+        )
+        .count()
+    )
+
+    total_pages = math.ceil(countAll / ITEMS_PER_PAGE)
+
+    return render_template('index.html', query=query, phones=phones, total_pages=total_pages, current_page=page)
 
 
 @app.route('/buy/<int:id>', methods=['POST'])
+@login_required
 def buy(id):
     purchased = Purchased(phoneid=id, userid=current_user.id)
     db.session.add(purchased)

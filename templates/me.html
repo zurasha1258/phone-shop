@@ -148,6 +148,15 @@
             font-weight: 600;
             color: #004aad;
         }
+        .isdeleted {
+        background-color: red;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        border-radius:10px;
+        padding:4px;
+
+        }
     </style>
 </head>
 <body>
@@ -192,10 +201,13 @@
         <div class="section">
             <h2>My Items</h2>
             {% for phone in uploadItems %}
-            <div class="list-item d-flex flex-row gap-3">
+            <div class="list-item d-flex justify-content-start align-items-center flex-row gap-3">
                 <img src="{{ phone.img }}" class="card-img-top imgTag"/>
                 <h5 class="card-title">{{ phone.name }},</h5>
-                <p class="card-text">{{ phone.price }} $</p>
+                <p class="card-title">{{ phone.price }} $</p>
+                {% if phone.isdeleted %}
+                <div class="isdeleted">Phone is deleted</div>
+                {% endif %}
             </div>
             {% endfor %}
         </div>
