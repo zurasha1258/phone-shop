@@ -1,0 +1,109 @@
+<!-- admin_users.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Users</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+.image {
+    width: 40px;
+    }
+
+/* Block and Unblock Buttons */
+form button {
+    padding: 6px 12px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Block Button */
+form button[type="submit"]:nth-of-type(1) {
+    background-color: #f39c12;
+    color: white;
+}
+
+form button[type="submit"]:nth-of-type(1):hover {
+    background-color: #e67e22;
+}
+
+/* Unblock Button */
+form button[type="submit"]:nth-of-type(2) {
+    background-color: #27ae60;
+    color: white;
+}
+
+form button[type="submit"]:nth-of-type(2):hover {
+    background-color: #2ecc71;
+}
+
+
+
+
+
+</style>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #333;">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="/admin/users"><img class="image" src="https://vectorified.com/images/tbc-icon-14.png" alt="Logo"></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/users">Manage Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/phones">Manage Phones</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2 class="text-center">Manage Users</h2>
+
+        <!-- Users Table -->
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <th scope="row">{{ user.id }}</th>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role if user.role else 'User' }}</td>
+                    <td>
+                        {% if user.role == 'admin' %}
+                         <span class="text-muted">Actions disabled for admin</span>
+                        {% else %}
+                             {% if user.status == 'blocked' %}
+                                <form action="/admin/user/unblock/{{ user.id }}" method="POST">
+                                <button>unblock</button>
+                                 </form>
+                             {% else %}
+                              <form action="/admin/user/block/{{ user.id }}" method="POST">
+                               <button>block</button>
+                               </form>
+                                {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

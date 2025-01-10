@@ -121,16 +121,7 @@
             background-image: url('data:image/svg+xml;charset=utf8,%3Csvg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath stroke="white" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E');
         }
 
-        /* Carousel */
-        .carousel-img {
-            height: 300px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-        .carousel-inner {
-            border-radius: 10px;
-            overflow: hidden;
-        }
+
 
         /* Cards */
         .card {
@@ -198,31 +189,7 @@
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/"><img src="https://vectorified.com/images/tbc-icon-14.png" alt="Logo"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/myself">My Profile</a></li>
-                <li class="nav-item"><a class="nav-link" href="/add">Add Product</a></li>
-                {% if current_user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
-                {% else %}
-                <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
-                {% endif %}
-            </ul>
-            <form class="d-flex" role="search" action="/search" method="GET">
-                <input name="name" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-search" type="submit">Search</button>
-            </form>
-        </div>
-    </div>
-</nav>
+{% include 'navbar.html' %}
 
 
 <!-- Product Details -->
